@@ -1,0 +1,26 @@
+{
+  "name": "mycontactapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyentanmobile/nodejs_reactjs_mycontactapi.git"
+  },
+  "author": "Nguyen Ngoc Tan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyentanmobile/nodejs_reactjs_mycontactapi/issues"
+  },
+  "homepage": "https://github.com/nguyentanmobile/nodejs_reactjs_mycontactapi#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.7"
+  }
+}
