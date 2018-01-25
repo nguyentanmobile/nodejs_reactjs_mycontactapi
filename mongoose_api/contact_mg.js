@@ -1,8 +1,9 @@
 var mongoose =require("mongoose");
+
 mongoose.Promise = global.Promise;
 var Schema =mongoose.Schema;
 var MyContactSchema = new Schema({
-    username:String,
+    userid:String,
     password:String,
     imageurl:String,
     fullname:String,
@@ -17,11 +18,11 @@ exports.connect = function(dbURL,callback){
 exports.disconnect = function(callback){
     mongoose.disconnect(callback);
 }
-mongoose.model("User",MyContactSchema);
-var User = mongoose.model("User"); 
+mongoose.model("user",MyContactSchema);
+var User = mongoose.model("user"); 
 exports.createUser = function(username,password,imageurl,fullname,email,phone,info,callback){
     var user = new User();
-    user.username = username;
+    user.userid = username;
     user.password = password;
     user.imageurl = imageurl;
     user.fullname = fullname;
@@ -34,7 +35,7 @@ exports.createUser = function(username,password,imageurl,fullname,email,phone,in
     })
 }
 exports.readUser = function(username,password,callback){
-    User.findOne({user:username,pass:password},function(err,doc){       
+    User.findOne({userid:username,password:password},function(err,doc){       
         
         if(err) callback(err);
         else callback(null,doc);
@@ -44,7 +45,7 @@ exports.updateUser =function(username,password,imageurl,fullname,email,phone,inf
     exports.readUser(username,password,function(err,doc){
         if(err)callback(err);
         else{
-            doc.username = username;
+            doc.userid = username;
             doc.password = password;
             doc.imageurl = imageurl;
             doc.fullname = fullname;
