@@ -45,16 +45,19 @@ exports.updateUser =function(username,password,imageurl,fullname,email,phone,inf
     exports.readUser(username,password,function(err,doc){
         if(err)callback(err);
         else{
+
             doc.userid = username;
             doc.password = password;
-            doc.imageurl = imageurl;
+            if(imageurl!=""){
+                doc.imageurl = imageurl;
+            }
             doc.fullname = fullname;
             doc.email = email;
             doc.phone = phone;
             doc.info = info;
             doc.save(function(err){
                 if(err) callback(err);
-                else callback();
+                else callback(null,doc);
             })
         }
     })

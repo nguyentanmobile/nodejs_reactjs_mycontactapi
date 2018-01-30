@@ -18,25 +18,88 @@ router.get("/listuserapi",function(req,res){
         error:"Can't connect to server. Please, login again" //null or error message
     });
 })
+router.post("/update",function(req,res){
+    console.log("asfasf"+req.body)
+    var storage = multer.diskStorage({
+        destination: function (req, file, callback) {
+            callback(null, './public/images')
+          },
+          filename: function (req, file, callback) {
+
+            callback(null, file.originalname );           
+          }
+    })
+    var upload = multer({
+        storage:storage
+    }).any();
+    upload(req,res,(err)=>{
+        if(err){
+            res.json({
+                userContent:null,
+                error:err
+            });
+        }
+        else{
+            var imageurl="" ;
+            console.log(req.body);//is json object about text
+            
+           req.files.forEach(function(item) { //only file
+                
+                imageurl = "/images/"+item.filename;
+                // move your file to destination
+            });
+            var user = req.body;
+            contact_mg.updateUser(user.userid,user.password,imageurl,user.fullname,user.email,user.phone,user.info,function(err,doc){
+                
+                if(err){
+                    res.json({
+                        userContent:null,
+                        error:err
+                    });
+                }else{
+                    
+                    res.json({
+                        userContent:{
+                            userid:doc.userid,
+                            password:doc.password,
+                            imageurl:doc.imageurl,
+                            fullname:doc.fullname,
+                            email:doc.email,
+                            phone:doc.phone,
+                            info:doc.info                           
+                        },
+                        error:null
+                    });
+                }
+            });
+            
+            
+        }
+    })
+    
+})
 router.post("/login",function(req,res){
-    var body = req.body;
-    console.log(body)
-    contact_mg.readUser(body.username,body.password,function(err,doc){
+    var body = JSON.parse(JSON.stringify(req.body));   
+    
+    contact_mg.readUser(body.userid,body.password,function(err,doc){
+      
         if(err==null){
+            
             if(doc==null){
                 res.json({
-                    usercontent:null,
+                    userContent:null,
                     error:"Can't get data from database.Please Signup"
                 })
             }else{
+                
                 res.json({
-                    usercontent:doc,
+                    userContent:doc,
                     error:null
                 });
             }
         }else{
             res.json({
-                usercontent:null,
+                userContent:null,
                 error:err
             });
         }
@@ -59,15 +122,16 @@ router.post("/adduser",function(req,res){
     upload(req,res,(err)=>{
         if(err){
             res.json({
-                usercontent:null,
+                userContent:null,
                 error:err
             });
         }
         else{
             var imageurl ;
            // console.log(req.body);//is json object about text
-            req.files.forEach(function(item) { //only file
-                console.log(item);
+            
+           req.files.forEach(function(item) { //only file
+                
                 imageurl = "/images/"+item.filename;
                 // move your file to destination
             });
@@ -76,7 +140,7 @@ router.post("/adduser",function(req,res){
                 
                 if(err){
                     res.json({
-                        usercontent:null,
+                        userContent:null,
                         error:err
                     });
                 }else{
